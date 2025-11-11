@@ -11,8 +11,6 @@ import IUserTokenPayload from "./interfaces/IUserTokenPayload"
 import dotenv from "dotenv"
 dotenv.config()
 
-process.loadEnvFile()
-
 declare global {
   namespace Express {
     interface Request {
