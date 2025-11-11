@@ -1,0 +1,17 @@
+::1 POST /auth/login 200 183 - 125.501 ms
+::1 POST /auth/register 200 141 - 100.802 ms
+::1 POST /auth/login 200 183 - 109.955 ms
+::1 GET /productos 200 306 - 16.105 ms
+::1 POST /auth/login 200 183 - 98.373 ms
+::1 POST /auth/login 200 183 - 101.344 ms
+::1 GET /productos 200 306 - 8.668 ms
+::1 POST /auth/login 200 183 - 127.397 ms
+::1 GET /productos 200 306 - 8.550 ms
+::1 POST /auth/register 200 148 - 201.715 ms
+::1 POST /auth/login 200 183 - 161.247 ms
+::1 GET /productos 200 26 - 55.507 ms
+::1 POST /productos 429 75 - 1.282 ms
+::1 POST /productos 429 75 - 0.420 ms
+::1 POST /productos 201 119 - 65.937 ms
+::1 GET /productos 200 145 - 55.676 ms
+::1 POST /productos 201 145 - 57.986 ms

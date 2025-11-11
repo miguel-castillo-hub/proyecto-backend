@@ -1,0 +1,58 @@
+[
+  {
+    "id": 2,
+    "nombre": "Auriculares Sony WH-1000XM4",
+    "categoria": "Audio",
+    "precio": 320,
+    "stock": 25,
+    "descripcion": "Auriculares inalámbricos con cancelación activa de ruido."
+  },
+  {
+    "id": 3,
+    "nombre": "Cafetera Nespresso Essenza Big Boi Edition",
+    "categoria": "Electrodomésticos",
+    "precio": 250,
+    "stock": 8,
+    "descripcion": "Cafetera compacta con sistema de cápsulas."
+  },
+  {
+    "id": 4,
+    "nombre": "Silla Gamer Redragon Saturn",
+    "categoria": "Muebles",
+    "precio": 210,
+    "stock": 15,
+    "descripcion": "Silla ergonómica reclinable con apoyabrazos 3D."
+  },
+  {
+    "id": null,
+    "nombre": "Cuchara",
+    "descripcion": "pinpon",
+    "precio": 12,
+    "categoria": "no.",
+    "stock": 3000
+  },
+  {
+    "id": null,
+    "nombre": "Cuchara",
+    "descripcion": "pinpon",
+    "precio": 12,
+    "categoria": "no.",
+    "stock": 3000
+  },
+  {
+    "id": null,
+    "nombre": "Cuchara",
+    "descripcion": "pinpon",
+    "precio": 12,
+    "categoria": "no.",
+    "stock": 3000
+  },
+  {
+    "id": 8,
+    "nombre": "Cuchara",
+    "descripcion": "pinpon",
+    "precio": 12,
+    "categoria": "no.",
+    "stock": 3000
+  }
+]
