@@ -3,7 +3,6 @@ import express, { Request, Response } from "express"
 import cors from "cors"
 import { connectDB } from "./config/mongodb"
 import productRouter from "./routes/productRoutes"
-import { authMiddleware } from "./middleware/authMiddleware"
 import userRouter from "./routes/usersRoutes"
 import morgan from "morgan"
 import limiter from "./middleware/rateLimitMiddleware"
@@ -34,7 +33,7 @@ app.get("/", (request: Request, response: Response) => {
 })
 
 app.use("/auth", limiter, userRouter)
-app.use("/productos", authMiddleware, productRouter)
+app.use("/productos", productRouter)
 
 // endpoint para el status del servidor
 app.use((request, response) => {
