@@ -32,8 +32,8 @@ app.get("/", (request: Request, response: Response) => {
   response.json({ status: true })
 })
 
-app.use("/auth", limiter, userRouter)
-app.use("/productos", productRouter)
+app.use("/v3/auth", limiter, userRouter)
+app.use("/v3/productos", productRouter)
 
 // endpoint para el status del servidor
 app.use((request, response) => {

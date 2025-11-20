@@ -8,7 +8,21 @@ import { createProductSchema, updatedProductSchema } from "../validators/product
 class ProductController {
   static getAllProducts = async (req: Request, res: Response): Promise<void | Response> => {
     try {
-      const listProducts = await Producto.find()
+      const { name, stock, category, minPrice, maxPrice } = req.query
+
+      const filter: any = {}
+
+      if (name) filter.name = new RegExp(String(name), "i")
+      if (stock) filter.stock = Number(stock)
+      if (category) filter.category = new RegExp(String(category), "i")
+      if (minPrice || maxPrice) {
+        filter.price = {}
+
+        if (minPrice) filter.price.$gt = minPrice
+        if (maxPrice) filter.price.$lt = maxPrice
+      }
+
+      const listProducts = await Producto.find(filter)
       res.json({ success: true, data: listProducts })
     } catch (e) {
       const error = e as Error
