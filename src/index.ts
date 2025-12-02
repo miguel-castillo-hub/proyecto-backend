@@ -8,6 +8,9 @@ import morgan from "morgan"
 import limiter from "./middleware/rateLimitMiddleware"
 import IUserTokenPayload from "./interfaces/IUserTokenPayload"
 import dotenv from "dotenv"
+import logger from "./config/logger"
+import transporter from "./config/emailConfig"
+import createTemplate from "./utils/emailTemplate"
 dotenv.config()
 
 declare global {
@@ -25,6 +28,7 @@ const app = express()
 // middleware
 app.use(cors())
 app.use(express.json())
+app.use(logger)
 
 app.use(morgan("dev"))
 
@@ -33,7 +37,32 @@ app.get("/", (request: Request, response: Response) => {
 })
 
 app.use("/v3/auth", limiter, userRouter)
+// http://localhost:3861/v3/productos?
 app.use("/v3/productos", productRouter)
+
+// enviar email
+app.post("/email/send", async (request, response) => {
+  const { subject, email, message } = request.body
+
+  if (!subject || !email || !message) {
+    return response.status(400).json({ success: false, message: "Data invalida" })
+  }
+
+  try {
+    const info = await transporter.sendMail({
+      from: `Mensaje d la tienda: ${email}`,
+      to: process.env.EMAIL_USER,
+      subject,
+      html: createTemplate(message)
+    })
+
+    response.json({ success: true, message: "El correo fue enviado cn éxito", info })
+
+  } catch (e) {
+    const error = e as Error
+    response.status(500).json({ success: false, error: error.message })
+  }
+})
 
 // endpoint para el status del servidor
 app.use((request, response) => {

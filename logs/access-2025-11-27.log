@@ -1,0 +1,16 @@
+::1 GET /products? 404 38 - 2.784 ms
+::1 GET /products? 404 38 - 1.193 ms
+::1 GET /products? 404 38 - 0.184 ms
+::1 GET /favicon.ico 404 38 - 0.157 ms
+::1 GET /v3/productos? 200 291 - 422.943 ms
+::1 GET /v3/productos? 304 - - 46.048 ms
+::1 GET /v3/productos? 304 - - 42.757 ms
+::1 GET /v3/productos? 304 - - 46.582 ms
+::1 GET /v3/productos? 304 - - 46.939 ms
+::1 POST /v3/auth/register 200 157 - 184.462 ms
+::1 GET /v3/productos? 304 - - 62.182 ms
+::1 GET /v3/productos? 304 - - 48.244 ms
+::1 POST /v3/auth/register 409 73 - 144.521 ms
+::1 POST /v3/auth/register 409 73 - 143.008 ms
+::1 GET /v3/productos? 304 - - 46.225 ms
+::1 GET /v3/productos? 304 - - 46.249 ms

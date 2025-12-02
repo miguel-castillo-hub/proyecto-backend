@@ -1,81 +1,64 @@
 import { Request, Response } from "express"
 import bcrypt from "bcryptjs"
-import { IUser } from "../interfaces/IUsers"
-import { model, Model, Schema } from "mongoose"
+import User from "../model/UserModel"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 dotenv.config()
 
-const userSchema = new Schema<IUser>({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
-}, {
-  versionKey: false
-})
-
-const User: Model<IUser> = model("User", userSchema)
-
 const SECRET_KEY = process.env.JWT_SECRET!
 
-class userController {
-  static userRegister = async (request: Request, response: Response): Promise<void | Response> => {
+class UsersController {
+  static register = async (req: Request, res: Response): Promise<void | Response> => {
     try {
-      const { email, password } = request.body
+      const { email, password } = req.body
 
       if (!email || !password) {
-        return response.status(400).json({ error: "Datos invalidos" })
+        return res.status(400).json({ success: false, error: "Datos invalidos" })
       }
 
-      // crear el hash de la password
+      // crear el hash de la contraseña
       const hash = await bcrypt.hash(password, 10)
-      const newUser = new User({
-        email, password: hash
-      })
+      const newUser = new User({ email, password: hash })
 
       await newUser.save()
-      response.json(newUser)
+      res.json({ success: true, data: newUser })
     } catch (e) {
       const error = e as Error
-      if (error.name === "MongoServerError") {
-        return response.status(409).json({ message: "Usuario ya existente en nuestra base de datos" })
+      switch (error.name) {
+        case "MongoServerError":
+          return res.status(409).json({ success: false, error: "Usuario ya existente en nuestra base de datos" })
       }
     }
   }
 
-  static userLogin = async (request: Request, response: Response): Promise<void | Response> => {
+  static login = async (req: Request, res: Response): Promise<void | Response> => {
     try {
-      const { email, password } = request.body
+      const { email, password } = req.body
 
       if (!email || !password) {
-        return response.status(400).json({ error: "Datos invalidos" })
+        return res.status(400).json({ success: false, error: "Datos invalidos" })
       }
 
       const user = await User.findOne({ email })
+
       if (!user) {
-        return response.status(401).json({ error: "No autorizado" })
+        return res.status(401).json({ success: false, error: "No autorizado" })
       }
 
-      // validar la password
+      // validar la contraseña
       const isValid = await bcrypt.compare(password, user.password)
 
       if (!isValid) {
-        return response.status(401).json({ error: "No autorizado" })
+        return res.status(401).json({ success: false, error: "No autorizado" })
       }
 
-      // permiso especial -> sesión de uso
-      // jsonwebtoken -> jwt
-
-      // 1 - payload -> información pública que quiero compartir del usuario logueado
-      // 2 - clave secreta -> firma que valida el token
-      // 3 - opciones -> cuando expira
-
-      const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "1h" })
-      response.json({ token })
+      const token = jwt.sign({ id: user._id, email: user.email }, SECRET_KEY, { expiresIn: "1h" })
+      res.json({ success: true, token })
     } catch (e) {
       const error = e as Error
-      response.status(500).json({ error: error.message })
+      res.status(500).json({ success: false, error: error.message })
     }
   }
 }
 
-export default userController
+export default UsersController
