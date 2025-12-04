@@ -41,7 +41,7 @@ app.get("/", (request: Request, response: Response) => {
   response.json({ status: true })
 })
 
-app.use("/v3/auth", userRouter)
+app.use("/v3/auth", limiter, userRouter)
 // http://localhost:3861/v3/productos?
 app.use("/v3/productos", productRouter)
 
