@@ -8,12 +8,21 @@ dotenv.config()
 const SECRET_KEY = process.env.JWT_SECRET!
 
 class UsersController {
+
+
+
   static register = async (req: Request, res: Response): Promise<void | Response> => {
     try {
       const { email, password } = req.body
 
       if (!email || !password) {
         return res.status(400).json({ success: false, error: "Datos invalidos" })
+      }
+
+      const user = await User.findOne({ email })
+
+      if (user) {
+        return res.status(409).json({ success: false, error: "El usuario ya existe" })
       }
 
       // crear el hash de la contraseña

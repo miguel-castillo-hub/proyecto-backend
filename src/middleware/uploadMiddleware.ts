@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 })
 
 const fileFilter = (request: Express.Request, file: Express.Multer.File, callback: multer.FileFilterCallback) => {
-  if (file.mimetype.startsWith("/image")) {
+  if (file.mimetype.startsWith("image/")) {
     callback(null, true)
   } else {
     callback(new Error("Solo se permiten imagenes"))

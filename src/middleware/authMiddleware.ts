@@ -5,12 +5,13 @@ import IUserTokenPayload from "../interfaces/IUserTokenPayload"
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const SECRET_KEY = process.env.JWT_SECRET!
   const header = req.headers.authorization
+  console.log(header)
 
   if (!header) {
     return res.status(401).json({ error: "El token es requerido" })
   }
 
-  const token = header?.split(" ")[1]
+  const token = header.split(" ")[1]
 
   try {
     const payload = jwt.verify(token, SECRET_KEY);

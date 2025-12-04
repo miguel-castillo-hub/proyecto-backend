@@ -12,7 +12,8 @@ const productSchema = new Schema<IProducto>({
   descripcion: { type: String, default: "No tiene descripción" },
   stock: { type: Number, default: 0, min: 0 },
   categoria: { type: String, default: "Sin categoría" },
-  precio: { type: Number, default: 0, min: 0 }
+  precio: { type: Number, default: 0, min: 0 },
+  imagen: { type: String }
 }, {
   versionKey: false
 })

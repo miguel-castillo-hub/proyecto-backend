@@ -9,8 +9,9 @@ import limiter from "./middleware/rateLimitMiddleware"
 import IUserTokenPayload from "./interfaces/IUserTokenPayload"
 import dotenv from "dotenv"
 import logger from "./config/logger"
-import transporter from "./config/emailConfig"
-import createTemplate from "./utils/emailTemplate"
+import path from "node:path"
+import emailService from "./services/emailService"
+import fs from "fs"
 dotenv.config()
 
 declare global {
@@ -22,13 +23,17 @@ declare global {
 }
 
 const PORT = process.env.PORT
-
 const app = express()
 
-// middleware
 app.use(cors())
 app.use(express.json())
 app.use(logger)
+
+const uploadsPath = path.join(__dirname, "../uploads")
+
+if (!fs.existsSync(uploadsPath)) {
+  fs.mkdirSync(uploadsPath, { recursive: true })
+}
 
 app.use(morgan("dev"))
 
@@ -36,33 +41,12 @@ app.get("/", (request: Request, response: Response) => {
   response.json({ status: true })
 })
 
-app.use("/v3/auth", limiter, userRouter)
+app.use("/v3/auth", userRouter)
 // http://localhost:3861/v3/productos?
 app.use("/v3/productos", productRouter)
 
 // enviar email
-app.post("/email/send", async (request, response) => {
-  const { subject, email, message } = request.body
-
-  if (!subject || !email || !message) {
-    return response.status(400).json({ success: false, message: "Data invalida" })
-  }
-
-  try {
-    const info = await transporter.sendMail({
-      from: `Mensaje d la tienda: ${email}`,
-      to: process.env.EMAIL_USER,
-      subject,
-      html: createTemplate(message)
-    })
-
-    response.json({ success: true, message: "El correo fue enviado cn éxito", info })
-
-  } catch (e) {
-    const error = e as Error
-    response.status(500).json({ success: false, error: error.message })
-  }
-})
+app.post("/email/send", emailService)
 
 // endpoint para el status del servidor
 app.use((request, response) => {
